@@ -25,7 +25,7 @@ public class AES {
 
         System.out.println("Original Text : "+originalText);
 
-        byte[] encryptedText = encrypt(plainText.getBytes(), key, initVect);
+        byte[] encryptedText = encrypt(originalText.getBytes(), key, initVect);
         System.out.println("Encrypted Text : "+Base64.getEncoder().encodeToString(encryptedText)); //we need to turn the encrypted text from byte[] to a string
 
         String decryptedText = decrypt(encryptedText,key,initVect);
@@ -34,7 +34,29 @@ public class AES {
 
     public static byte[] encrypt(byte[] plaintext, SecretKey key, byte[] initVect)// we need all this stuff to be able to encrypt something
     {
-        byte [] encryptedText = new byte [0]; //0 is just a toy length for now
+      //we need to tell everything that we are doing AES/get it into the format to be able to do the initialization
+
+      //get Cipher instance
+      Cipher encrypt =
+      Cipher.getInstance("AES/CBC/PKCS5Padding");
+
+
+      //Encode the key for AES operations
+
+      SecretKeySpec keySpec = new SecretKeySpec(key.getEncoded(), "AES");//SecretKeySpec requires a byte array, so we have to do key.getEncoded()
+
+      //create IvParameterSpec
+      IvParameterSpec ivSpec = new IvParameterSpec(initVect);
+
+
+      //we need to initialize the encryption -> need opmode of the encryption (AES, CBC, etc.), the secretkey, and the initialization vector parameter spec
+
+      encrypt.init(Cipher.ENCRYPT_MODE, keySpec, initVectSpec);
+
+    //let's do the encryption now :)
+
+        byte [] encryptedText = encrypt.doFinal(plaintext);
+
         return encryptedText;
     }
 
