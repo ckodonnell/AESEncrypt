@@ -13,7 +13,7 @@ public class AES {
         keyGen.init(128); //want to make sure key is given to us in byte vector
 
         //make the key
-        SecretKey key = KeyGenerator.generateKey();
+        SecretKey key = KeyGenerator.generateKey(); //maybe we should just use a random number thing for this? 
 
 
         //make an initial vector
@@ -49,20 +49,29 @@ public class AES {
       IvParameterSpec ivSpec = new IvParameterSpec(initVect);
 
 
-      //we need to initialize the encryption -> need opmode of the encryption (AES, CBC, etc.), the secretkey, and the initialization vector parameter spec
-
       encrypt.init(Cipher.ENCRYPT_MODE, keySpec, initVectSpec);
 
-    //let's do the encryption now :)
+      byte [] encryptedText = encrypt.doFinal(plaintext);
 
-        byte [] encryptedText = encrypt.doFinal(plaintext);
-
-        return encryptedText;
+      return encryptedText;
     }
 
-    public static byte[] decrypt(byte[] encryptedText, SecretKey key, byte[] initVect)//we need all this stuff to be able to decrypt a message
+    public static String decrypt(byte[] encryptedText, SecretKey key, byte[] initVect)
+            throws NoSuchAlgorithmException, NoSuchPaddingException // we need all this stuff to be able to decrypt a
+                                                                   // message
     {
-        byte [] decryptedText = new byte [0]; //0 is just a toy length for now
+        Cipher decrypt = Cipher.getInstance("AES/CBC/PKCS5Padding");
+
+        SecretKeySpec keySpec = new SecretKeySpec(key.getEncoded(), "AES");
+
+        IvParameterSpec ivSpec = new IvParameterSpec(initVect);
+
+        decrypt.init(Cipher.DECRYPT_MODE, keySpec, ivSpec);
+
+        byte[] decryptedBytes = decrypt.doFinal(encryptedText);
+
+        String decryptedText = new String(decryptedBytes);
+
         return decryptedText;
     }
 }
