@@ -10,10 +10,12 @@ public class AES {
 
     public static void main(String[] args) throws NoSuchAlgorithmException {
         KeyGenerator keyGen = KeyGenerator.getInstance("AES");
-        keyGen.init(128); //want to make sure key is given to us in byte vector
+        SecureRandom secureRandom = new SecureRandom();
+        int keyBitSize = 128;
+        keyGen.init(keyBitSize, secureRandom); //want to make sure key is given to us in byte vector
 
         //make the key
-        SecretKey key = KeyGenerator.generateKey(); //maybe we should just use a random number thing for this? 
+        SecretKey key = KeyGenerator.generateKey(); //maybe we should just use a random number thing for this?
 
 
         //make an initial vector
@@ -49,7 +51,7 @@ public class AES {
       IvParameterSpec ivSpec = new IvParameterSpec(initVect);
 
 
-      encrypt.init(Cipher.ENCRYPT_MODE, keySpec, initVectSpec);
+      encrypt.init(Cipher.ENCRYPT_MODE, keySpec, ivSpec);
 
       byte [] encryptedText = encrypt.doFinal(plaintext);
 
