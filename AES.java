@@ -2,6 +2,8 @@ import java.security.NoSuchAlgorithmException;
 
 import java.security.SecureRandom;
 import javax.crypto.*;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
 
 import java.util.*;
 
@@ -32,7 +34,7 @@ public class AES {
         System.out.println("Decrypted Text : "+decryptedText);
     }
 
-    public static byte[] encrypt(byte[] plaintext, SecretKey key, byte[] initVect)// we need all this stuff to be able to encrypt something
+    public static byte[] encrypt(byte[] plaintext, SecretKey key, byte[] initVect) throws Exception // we need all this stuff to be able to encrypt something
     {
       //we need to tell everything that we are doing AES/get it into the format to be able to do the initialization
 
@@ -49,7 +51,7 @@ public class AES {
       IvParameterSpec ivSpec = new IvParameterSpec(initVect);
 
 
-      encrypt.init(Cipher.ENCRYPT_MODE, keySpec, initVectSpec);
+      encrypt.init(Cipher.ENCRYPT_MODE, keySpec, ivSpec);
 
       byte [] encryptedText = encrypt.doFinal(plaintext);
 
@@ -57,7 +59,7 @@ public class AES {
     }
 
     public static String decrypt(byte[] encryptedText, SecretKey key, byte[] initVect)
-            throws NoSuchAlgorithmException, NoSuchPaddingException // we need all this stuff to be able to decrypt a
+            throws Exception // we need all this stuff to be able to decrypt a
                                                                    // message
     {
         Cipher decrypt = Cipher.getInstance("AES/CBC/PKCS5Padding");
