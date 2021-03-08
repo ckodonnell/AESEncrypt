@@ -20,7 +20,7 @@ public class AES {
         keyGen.init(keyBitSize, secureRandom); //want to make sure key is given to us in byte vector
 
         //make the key
-      SecretKey key = keyGen.generateKey(); //maybe we should just use a random number thing for this?
+      SecretKey key = keyGen.generateKey();
 
 
         //make an initial vector
@@ -49,15 +49,15 @@ public class AES {
 
 
       //Encode the key for AES operations
-
       SecretKeySpec keySpec = new SecretKeySpec(key.getEncoded(), "AES");//SecretKeySpec requires a byte array, so we have to do key.getEncoded()
 
       //create IvParameterSpec
       IvParameterSpec ivSpec = new IvParameterSpec(initVect);
 
-
+      //initialize encrypter
       encrypt.init(Cipher.ENCRYPT_MODE, keySpec, ivSpec);
 
+      //perform encryption
       byte [] encryptedText = encrypt.doFinal(originalText);
 
       return encryptedText;
@@ -66,17 +66,22 @@ public class AES {
     public static String decrypt(byte[] encryptedText, SecretKey key, byte[] initVect)
             throws Exception // we need all this stuff to be able to decrypt a
                                                                    // message
-    {
+    { 
+       //get Cipher instance
         Cipher decrypt = Cipher.getInstance("AES/CBC/PKCS5Padding");
 
         SecretKeySpec keySpec = new SecretKeySpec(key.getEncoded(), "AES");
 
+        //create IvParameterSpec
         IvParameterSpec ivSpec = new IvParameterSpec(initVect);
 
+        //initialize decrypter with key and iv
         decrypt.init(Cipher.DECRYPT_MODE, keySpec, ivSpec);
 
+        //perform the decryption
         byte[] decryptedBytes = decrypt.doFinal(encryptedText);
-
+         
+        //convery decrypted bytes into String format
         String decryptedText = new String(decryptedBytes);
 
         return decryptedText;
