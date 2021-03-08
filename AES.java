@@ -39,7 +39,7 @@ public class AES {
         System.out.println("Decrypted Text : "+decryptedText);
     }
 
-    public static byte[] encrypt(byte[] plaintext, SecretKey key, byte[] initVect) throws Exception // we need all this stuff to be able to encrypt something
+    public static byte[] encrypt(byte[] originalText, SecretKey key, byte[] initVect) throws Exception // we need all this stuff to be able to encrypt something
     {
       //we need to tell everything that we are doing AES/get it into the format to be able to do the initialization
 
@@ -58,7 +58,7 @@ public class AES {
 
       encrypt.init(Cipher.ENCRYPT_MODE, keySpec, ivSpec);
 
-      byte [] encryptedText = encrypt.doFinal(plaintext);
+      byte [] encryptedText = encrypt.doFinal(originalText);
 
       return encryptedText;
     }
