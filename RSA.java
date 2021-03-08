@@ -6,6 +6,9 @@ public class RSA {
         KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
         SecureRandom secureRandom = new SecureRandom();
         keyGen.initialize(1024, secureRandom);
+
+        KeyPair pair = keyGen.generateKeyPair();
+
     }
     public byte [] encrypt (byte [] plainText){
         return plainText;
