@@ -1,3 +1,3 @@
 # AESEncrypt
 
-Uses the crypto package in Java. 
+AES uses the crypto package in Java. 
