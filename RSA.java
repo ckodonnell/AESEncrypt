@@ -26,14 +26,22 @@ public class RSA {
     }
     public static byte [] encrypt (String originalText, PublicKey pubKey) throws BadPaddingException, IllegalBlockSizeException, InvalidKeyException, NoSuchPaddingException, NoSuchAlgorithmException{
 
-      Cipher encrypt = Cipher.getInstance("RSA/ECB/PKCS1Padding");
+        Cipher encrypt = Cipher.getInstance("RSA/ECB/PKCS1Padding");
 
-      encrypt.init(Cipher.ENCRYPT_MODE, pubKey);
+        encrypt.init(Cipher.ENCRYPT_MODE, pubKey);
 
         return encrypt.doFinal(originalText.getBytes());
     }
-    public static String decrypt (byte [] encryptedMessage, PrivateKey privKey){
-        String decryptedMessage = "";
-        return decryptedMessage;
+    
+    public static String decrypt (byte [] encryptedMessage, PrivateKey privKey) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException{
+
+        Cipher decrypt = Cipher.getInstance("RSA/ECB/PKCS1Padding");
+
+        decrypt.init(Cipher.DECRYPT_MODE, privKey);
+
+        byte [] decryptedBytes = decrypt.doFinal(encryptedMessage);
+
+        String decryptedText = new String(decryptedBytes);
+        return decryptedText;
     }
 }
